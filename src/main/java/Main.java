@@ -20,7 +20,7 @@ public class Main extends HttpServlet {
     String password = dbUri.getUserInfo().split(":")[1];
     String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
 
-    BasicDataSource dataSource = new BasicDataSource();
+    dataSource = new BasicDataSource();
     dataSource.setDriverClassName("org.postgresql.Driver");
     dataSource.setUrl(dbUrl);
     dataSource.setUsername(username);
