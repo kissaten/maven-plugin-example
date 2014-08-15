@@ -6,6 +6,8 @@ import org.eclipse.jetty.servlet.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.sql.*;
+import org.apache.commons.dbcp2.*;
 
 public class Main extends HttpServlet {
   @Override
@@ -52,7 +54,13 @@ public class Main extends HttpServlet {
     String password = dbUri.getUserInfo().split(":")[1];
     String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
 
-    return DriverManager.getConnection(dbUrl, username, password);
+    BasicDataSource dataSource = new BasicDataSource();
+    dataSource.setDriverClassName("org.postgresql.Driver");
+    dataSource.setUrl(dbUrl);
+    dataSource.setUsername(username);
+    dataSource.setPassword(password);
+    dataSource.setInitialSize(1);
+    return dataSource.getConnection();
   }
 
   public static void main(String[] args) throws Exception{
