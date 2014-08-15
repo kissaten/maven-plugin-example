@@ -11,7 +11,7 @@ import org.apache.commons.dbcp2.*;
 
 public class Main extends HttpServlet {
 
-  private BasicDataSource dataSource;
+  private BasicDataSource connectionPool;
 
   public Main() throws URISyntaxException, SQLException {
     URI dbUri = new URI(System.getenv("DATABASE_URL"));
@@ -20,12 +20,12 @@ public class Main extends HttpServlet {
     String password = dbUri.getUserInfo().split(":")[1];
     String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
 
-    dataSource = new BasicDataSource();
-    dataSource.setDriverClassName("org.postgresql.Driver");
-    dataSource.setUrl(dbUrl);
-    dataSource.setUsername(username);
-    dataSource.setPassword(password);
-    dataSource.setInitialSize(1);
+    connectionPool = new BasicDataSource();
+    connectionPool.setDriverClassName("org.postgresql.Driver");
+    connectionPool.setUrl(dbUrl);
+    connectionPool.setUsername(username);
+    connectionPool.setPassword(password);
+    connectionPool.setInitialSize(1);
   }
 
   @Override
@@ -47,7 +47,7 @@ public class Main extends HttpServlet {
   private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     try {
-      Connection connection = dataSource.getConnection();
+      Connection connection = connectionPool.getConnection();
 
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
