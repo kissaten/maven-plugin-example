@@ -10,6 +10,24 @@ import java.sql.*;
 import org.apache.commons.dbcp2.*;
 
 public class Main extends HttpServlet {
+
+  private BasicDataSource dataSource;
+
+  public Main() throws URISyntaxException, SQLException {
+    URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+    String username = dbUri.getUserInfo().split(":")[0];
+    String password = dbUri.getUserInfo().split(":")[1];
+    String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
+
+    BasicDataSource dataSource = new BasicDataSource();
+    dataSource.setDriverClassName("org.postgresql.Driver");
+    dataSource.setUrl(dbUrl);
+    dataSource.setUsername(username);
+    dataSource.setPassword(password);
+    dataSource.setInitialSize(1);
+  }
+
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
@@ -29,7 +47,7 @@ public class Main extends HttpServlet {
   private void showDatabase(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     try {
-      Connection connection = getConnection();
+      Connection connection = dataSource.getConnection();
 
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
@@ -45,22 +63,6 @@ public class Main extends HttpServlet {
     } catch (Exception e) {
       resp.getWriter().print("There was an error: " + e.getMessage());
     }
-  }
-
-  private Connection getConnection() throws URISyntaxException, SQLException {
-    URI dbUri = new URI(System.getenv("DATABASE_URL"));
-
-    String username = dbUri.getUserInfo().split(":")[0];
-    String password = dbUri.getUserInfo().split(":")[1];
-    String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
-
-    BasicDataSource dataSource = new BasicDataSource();
-    dataSource.setDriverClassName("org.postgresql.Driver");
-    dataSource.setUrl(dbUrl);
-    dataSource.setUsername(username);
-    dataSource.setPassword(password);
-    dataSource.setInitialSize(1);
-    return dataSource.getConnection();
   }
 
   public static void main(String[] args) throws Exception{
