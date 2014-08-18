@@ -15,16 +15,15 @@ public class Main extends HttpServlet {
 
   public Main() throws URISyntaxException, SQLException {
     URI dbUri = new URI(System.getenv("DATABASE_URL"));
-
-    String username = dbUri.getUserInfo().split(":")[0];
-    String password = dbUri.getUserInfo().split(":")[1];
     String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
-
     connectionPool = new BasicDataSource();
+
+    if (dbUri.getUserInfo() != null) {
+      connectionPool.setUsername(dbUri.getUserInfo().split(":")[0]);
+      connectionPool.setPassword(dbUri.getUserInfo().split(":")[1]);
+    }
     connectionPool.setDriverClassName("org.postgresql.Driver");
     connectionPool.setUrl(dbUrl);
-    connectionPool.setUsername(username);
-    connectionPool.setPassword(password);
     connectionPool.setInitialSize(1);
   }
 
