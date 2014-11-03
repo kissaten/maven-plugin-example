@@ -17,38 +17,19 @@
       <artifactId>servlet-api</artifactId>
       <version>2.5</version>
     </dependency>
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>9.3-1102-jdbc41</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-dbcp2</artifactId>
-      <version>2.0.1</version>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
+        <groupId>com.heroku.maven</groupId>
+        <artifactId>heroku-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <appName>possessed-cemetery-7933</appName>
+          <processTypes>
+            <web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
+          </processTypes>
         </configuration>
-  	  </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.4</version>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals><goal>copy-dependencies</goal></goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

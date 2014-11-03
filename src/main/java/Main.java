@@ -5,9 +5,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.*;
-import java.sql.*;
-import org.apache.commons.dbcp2.*;
 
 public class Main extends HttpServlet {
 
@@ -16,7 +13,7 @@ public class Main extends HttpServlet {
       throws ServletException, IOException {
     resp.getWriter().print("Hello from Java!");
   }
-  
+
   public static void main(String[] args) throws Exception{
     Server server = new Server(Integer.valueOf(System.getenv("PORT")));
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
