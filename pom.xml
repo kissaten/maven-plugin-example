@@ -18,12 +18,13 @@
       <version>2.5</version>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
-        <groupId>com.heroku.maven</groupId>
+        <groupId>com.heroku.sdk</groupId>
         <artifactId>heroku-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1.6-SNAPSHOT</version>
         <configuration>
           <appName>possessed-cemetery-7933</appName>
           <processTypes>
@@ -33,4 +34,35 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.heroku.sdk</groupId>
+            <artifactId>heroku-maven-plugin</artifactId>
+            <configuration>
+              <appName>possessed-cemetery-7933</appName>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+      <profile>
+        <id>test</id>
+        <build>
+          <plugins>
+            <plugin>
+              <groupId>com.heroku.sdk</groupId>
+              <artifactId>heroku-maven-plugin</artifactId>
+              <configuration>
+                <appName>possessed-cemetery-7933</appName>
+              </configuration>
+            </plugin>
+          </plugins>
+        </build>
+      </profile>
+  </profiles>
 </project>
