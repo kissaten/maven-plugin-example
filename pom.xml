@@ -24,9 +24,8 @@
       <plugin>
         <groupId>com.heroku.sdk</groupId>
         <artifactId>heroku-maven-plugin</artifactId>
-        <version>0.1.6-SNAPSHOT</version>
+        <version>0.4.1</version>
         <configuration>
-          <appName>possessed-cemetery-7933</appName>
           <processTypes>
             <web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
           </processTypes>
